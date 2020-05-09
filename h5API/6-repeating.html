@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图像平铺</title>
+  <script>
+    window.onload = function(){
+      var canvas = document.getElementById('canvas');
+
+      //获取2d上下文
+      var context = canvas.getContext('2d');
+      
+      var image = new Image();
+      image.src = './logo.png';
+
+      //图片加载完毕事件
+      image.onload = function(){
+        var pattern = context.createPattern(image, 'no-repeat');
+        context.fillStyle = pattern;
+        context.fillRect(0,0,600,400);
+      }
+      
+    }
+  </script>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="400" style="border: 1px solid #333;"></canvas>
+</body>
+</html>

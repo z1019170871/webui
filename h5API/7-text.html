@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>绘制文本</title>
+  <script>
+    window.onload = function(){
+      var canvas = document.getElementById('canvas');
+
+      //获取2d上下文
+      var context = canvas.getContext('2d');
+      
+      context.fillStyle = 'red';
+      context.strokeStyle='blue';
+      context.lineWidth = 1;
+            
+      context.font='50px sans-serif'; //sans-serif 无衬线字体
+      context.textAlign='center';
+
+      context.fillText('hello world', 300, 300);
+      
+      context.strokeText('hello world', 200, 200);
+      
+    }
+  </script>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="400" style="border: 1px solid #333;"></canvas>
+</body>
+</html>
