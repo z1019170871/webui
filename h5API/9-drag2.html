@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拖放api</title>
+  <script>
+    window.onload = function(){
+      var body = document.body;
+      var parents = document.getElementsByClassName('parent');
+      parents = [...parents];
+      parents.push(body);
+      
+      var childs = document.getElementsByClassName('child');
+      childs = [...childs];
+      childs.forEach(function(item){
+        item.ondragstart = myDragstart;
+      })
+      parents.forEach(function(item){
+        item.ondragover = myDragOver;
+        item.ondrop = myDrop;
+      })
+
+
+      // 声明事件处理函数
+      function myDragstart(event){
+        event.dataTransfer.setData('id',this.id);
+        event.dataTransfer.effectAllowed = 'link';
+      }
+      function myDragOver(event){
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'link';
+      }
+      function myDrop(event){
+        event.stopPropagation(); // 阻止冒泡
+        var id = event.dataTransfer.getData('id');
+        var dom = document.getElementById(id);
+        this.appendChild(dom);
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- 目标元素 -->
+  <div class="parent"></div>
+  <div class="parent"></div>
+  <!-- 拖动元素 -->
+  <div id="one" class="child" draggable="true">1</div>
+  <div id="two" class="child" draggable="true">2</div>
+  <div id="three" class="child" draggable="true">3</div>
+  <div id="four" class="child" draggable="true">4</div>
+</body>
+<style>
+  .parent{
+      border: 1px solid #333;
+      height: 200px;
+      margin: 10px;
+  }
+  .child{
+      width: 100px;
+      height: 100px;
+      border: 1px solid #333;
+      float: left;
+      margin: 10px;
+  }
+  html,body{
+    height: 100%;
+  }
+</style>
+</html>

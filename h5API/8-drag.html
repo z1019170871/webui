@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖放api</title>
+    <script>
+        window.onload = function(){
+            var parent = document.getElementsByClassName('parent')[0];
+            
+            var childs = document.getElementsByClassName('child');
+            childs = Array.from(childs);
+            childs.forEach(function(item){
+                // 拖动元素上的开始拖动事件
+                item.ondragstart = function(event){
+                    event.dataTransfer.setData('id',this.id);
+                }
+                item.ondrag = function(){
+
+                }
+                item.ondragend = function(){
+
+                }
+            })
+        
+            // 拖动元素进入目标元素时的事件
+            parent.ondragenter = function(){
+
+            }
+            //拖动元素在目标元素中移动的事件
+            parent.ondragover = function(event){
+                event.preventDefault();
+            }
+            // 拖动元素放置到目标元素时的事件
+            parent.ondrop = function(event){
+                var id = event.dataTransfer.getData('id');
+                var dom = document.getElementById(id);
+                this.appendChild(dom);
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- 目标元素 -->
+    <div class="parent"></div>
+    <!-- 拖动元素 -->
+    <div id="one" class="child" draggable="true">1</div>
+    <div id="two" class="child" draggable="true">2</div>
+    <div id="three" class="child" draggable="true">3</div>
+    <div id="four" class="child" draggable="true">4</div>
+</body>
+<style>
+    .parent{
+        border: 1px solid #333;
+        height: 200px;
+        margin: 10px;
+    }
+    .child{
+        width: 100px;
+        height: 100px;
+        border: 1px solid #333;
+        float: left;
+        margin: 10px;
+    }
+</style>
+</html>
