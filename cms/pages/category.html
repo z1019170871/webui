@@ -8,7 +8,7 @@
   <div class="category-content">
     <div class="category-option">
       <button class="btn btn-primary" id="addBtn">新增</button>
-      <button class="btn btn-danger">批量删除</button>
+      <button class="btn btn-danger" id="batchBtn">批量删除</button>
     </div>
     <table class="table table-bordered">
       <thead>
@@ -196,6 +196,33 @@
     }
   })
 
+
+  // 批量删除
+  $('#batchBtn').click(function(){
+    var arr = [];
+    Array.from($(':checkbox:checked')).forEach(function(item){
+      arr.push($(item).val())
+    });
+    // console.log(arr)
+    if(arr.length > 0){
+      var result = confirm('是否删除所选数据?')
+      if(result){
+        // 批量删除操作
+        myAjax('/manager/category/batchDeleteCategory','post',{ids:arr.toString()},function(res){
+          
+          if(res.status==200){
+            findAllCategroy(); //更新数据
+          } else{
+            alert('删除失败')
+            $(':checkbox:checked').prop('checked',false);
+          }
+        })
+      }
+    } else{
+      alert('请勾选需要删除的数据');
+    }
+    
+  })
 
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
     var setting = {};
