@@ -3,10 +3,18 @@
   <div class="article-option">
     
     <div class="btn-left">
-      <button class="btn btn-primary">新增</button>
+      <button class="btn btn-primary" id="addArticle">新增</button>
       <button class="btn btn-danger">批量删除</button>
     </div>
-    <div class="btn-right"></div>
+    <div class="btn-right">
+      <span>请选择日期：</span>
+      <input type="text" id="beginTime" class="form-control">
+      ~
+      <input type="text" id="endTime" class="form-control">
+      <input type="text" id="keywords" class="form-control">
+      <button class="btn btn-primary" id="searchBtn">搜索</button>
+      <button class="btn btn-info" id="resetBtn">重置</button>
+    </div>
   </div>
   <!-- 表格 -->
   <div>
@@ -29,11 +37,148 @@
     </table>
   </div>
 
-  
+  <!-- 发布文章模态框 -->
+  <div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="articleModalLabel">发布文章</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="article-title">文章标题</label>
+              <input type="email" class="form-control" id="article-name" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+              <label for="article-category">所属栏目</label>
+              <select name="" id="article-parent" class="form-control">
+                
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="">列表样式</label>
+              <div class="row">
+                <div class="col-6">
+                  <input type="radio" name="listStyle" id="listOne">
+                  <label for="listOne" style="border: 1px solid #333;padding: 5px;width: 200px;height: 80px;">
+                    <div>123</div>
+                    <div><img style="width: 40px;" src="../images/user.png" alt=""></div>
+                  </label>
+                </div>
+                <div class="col-6">
+                  <input type="radio" name="listStyle" id="listTwo">
+                  <label for="listTwo" style="border: 1px solid #333;padding: 5px;width: 200px;height: 80px;">
+                    <div>123</div>
+                    <div><img style="width: 40px;" src="../images/user.png" alt=""></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="article-comment">正文</label>
+              <div id="editor"></div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="saveBtn">确定</button>
+        </div>
+        </div>
+    </div>
+  </div>
+
   <div id="articlePage" class="demo"></div>
 </div>
 
 <script>
+  var E = window.wangEditor;
+  var editor = new E('#editor');
+//创建编辑器
+  editor.create();
+
+  $('#addArticle').click(function(){
+    $('#articleModal').modal('show');
+  })
+
+
+  // 审核
+  $('.table').on('click','.passBtn',function(){
+    var id = $(this).closest('tr').find('[type=checkbox]').val();
+    myAjax('/manager/article/checkArticle','get',{
+      id:id,
+      status:'审核通过'
+    },function(res){
+      if(res.status == 200){
+        alert(res.message);
+        findAllArticle(0);
+      } else{
+        alert('审核失败');
+      }
+    })
+  })
+
+  $('#beginTime').fdatepicker();
+  $('#endTime').fdatepicker();
+
+  $('#searchBtn').click(function(){
+    $('tbody').empty();
+    var beginTime = $('#beginTime').val();
+    var endTime = $('#endTime').val();
+    var keywords = $('#keywords').val();
+    myAjax('/manager/article/findArticle','get',{
+      page:0,
+      pageSize:10,
+      beginTime:beginTime,
+      endTime:endTime,
+      keywords:keywords
+    },function(res){
+      res.data.list.forEach(function(item){
+        var newTr = $(`
+          <tr>
+            <td><input type="checkbox" value="`+item.id+`"></td>
+            <td>`+item.title+`</td>
+            <td>`+(item.category ? item.category.name : '--')+`</td>
+            <td>`+(item.author ? item.author.username : '--')+`</td>
+            <td>`+item.publishtime+`</td>   
+            <td>`+item.readtimes+`</td>
+            <td>`+item.status+`</td>
+            <td style="text-align:center;">
+              <span>
+                <i class="iconfont icon-shanchu category-delete" title="删除"></i>
+                <i class="iconfont icon-xiugai category-edit" title="修改"></i>
+              </span>
+            </td>
+          </tr>
+        `)
+        $('tbody').append(newTr);
+
+        $("#articlePage").sPage({
+        page:res.data.page+1,
+          pageSize:res.data.pageSize,
+          total:res.data.total,
+          prevPage:"←",
+          nextPage:"→",
+          backFun:function(page){
+            // page为当前点击的页码
+            findAllArticle(page-1);
+          }
+        });
+      })
+    })
+  })
+
+  $('#resetBtn').click(function(){
+    var beginTime = $('#beginTime').val('');
+    var endTime = $('#endTime').val('');
+    var keywords = $('#keywords').val('');
+    findAllArticle(0);
+  })
+
   findAllArticle(0);
   function findAllArticle(page){
     myAjax('/manager/article/findArticle','get',{page:page,pageSize:10},function(res){
@@ -47,7 +192,7 @@
             <td>`+(item.author ? item.author.username : '--')+`</td>
             <td>`+item.publishtime+`</td>   
             <td>`+item.readtimes+`</td>
-            <td>`+item.status+`</td>
+            <td>`+(item.status == '审核通过' ? item.status : '<button class="btn btn-info passBtn">通过</button>')+`</td>
             <td style="text-align:center;">
               <span>
                 <i class="iconfont icon-shanchu category-delete" title="删除"></i>
