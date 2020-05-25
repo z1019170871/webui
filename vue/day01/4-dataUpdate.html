@@ -1,31 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>数据的更新</title>
   <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.15/lodash.js"></script>
 </head>
+
 <body>
   <div id="app">
     {{arr}}
     {{msg}}
+    <button v-on:click="add">新增</button>
+    {{obj}}
   </div>
   <script>
     let vm = new Vue({
-      el:'#app',
-      data:{
-        arr:[1,2,3,4],
-        msg:'hello'
+      el: '#app',
+      data: {
+        arr: [1, 2, 3, 4],
+        msg: 'hello',
+        obj: {
+          name: 'zjf',
+          age: 21
+        }
+      },
+      methods: {
+        add() {
+          // this.obj = {...this.obj,gender:'male'};
+          // this.$set(this.obj,'gender','male')
+          // this.obj = Object.assign({}, this.obj, { gender: 'male' })
+          Object.assign(this.obj, { gender: 'male' })
+          this.obj = _.clone(this.obj)
+        }
       }
     })
 
-    setInterval(() => {
-      let random = Math.floor(Math.random()*10)
-      // vm.msg += random;
-      // console.log(vm.msg)
-      vm.arr.push(random)
-    }, 2000);
+    // setInterval(() => {
+    //   let random = Math.floor(Math.random()*10)
+    //   // vm.msg += random;
+    //   // console.log(vm.msg)
+    //   // vm.arr.push(random)
+    //   vm.arr = [...vm.arr,random] // 改变引用地址
+    // }, 2000);
   </script>
 </body>
+
 </html>

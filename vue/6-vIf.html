@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>属性的绑定</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div v-if="token">
+            你好{{username}}
+            <a href="">退出登录</a>
+        </div>
+        <div v-else>
+            <a href="" v-on:click.prevent="login">登录</a>
+            <a href="">没有账号？</a>
+        </div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                username:'zjf',
+                token:false
+            },
+            methods: {
+                login(){
+                    this.token = true
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
