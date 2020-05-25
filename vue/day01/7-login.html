@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>属性的绑定</title>
+    <title>登录</title>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
 </head>
@@ -13,7 +13,7 @@
     <div id="app">
         <div v-if="token">
             你好{{username}}
-            <a href="">退出登录</a>
+            <a href="" v-on:click.prevent="logout">退出登录</a>
         </div>
         <div v-else>
             <a href="" v-on:click.prevent="login">登录</a>
@@ -24,16 +24,16 @@
         let vm = new Vue({
             el: '#app',
             data: {
-                username:'zjf',
+                username:'',
                 token:localStorage.getItem('token')
             },
             methods: {
-                login(){
+                async login(){
                     let obj = {
                         username:'张三',
                         password:123321
                     }
-                    axios.post('http://39.96.21.48:8099/manager/user/login',obj)
+                    await axios.post('http://39.96.21.48:8099/manager/user/login',obj)
                     .then(res => {
                         localStorage.setItem('token',res.data.data.token)
                         this.token = res.data.data.token;
@@ -41,6 +41,20 @@
                     .catch(err => {
                         console.error(err); 
                     })
+                    
+                    axios.get('http://39.96.21.48:8099/manager/user/info', {
+                        params: {
+                            token: this.token
+                        }
+                    })
+                    .then(res => {
+                        this.username = res.data.data.username;
+                    })
+                },
+
+                logout(){
+                    localStorage.removeItem('token')
+                    this.token = null
                 }
             }
         })
