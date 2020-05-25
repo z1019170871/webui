@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vue实例对象</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+</head>
+<body>
+  <!-- 容器 -->
+  <div id="app">
+    {{msg}}
+    {{msg.split('').reverse().join('')}}
+  </div>
+  <script>
+    let vm = new Vue({
+      // 绑定模板
+      el:'#app',
+      // 定义在data中的数据可以在容器中访问
+      // data(){
+      //   return {
+      //     msg:'hello'
+      //   }
+      // },
+      data:{
+        msg:'hello'
+      }
+    })
+  </script>
+</body>
+</html>

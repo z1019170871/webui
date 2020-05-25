@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v-for</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <ul v-for="(item,index) in list" v-bind:key="item.id">
+      <li>{{index}}-----{{item.name}}</li>
+    </ul>
+    <ul v-for="(value,key,index) in obj">
+      <li>{{key}}:{{value}}</li>
+    </ul>
+  </div>
+  <script>
+    new Vue({
+      el:'#app',
+      data:{
+        obj:{
+          name:'zjf',
+          age:21,
+          gender:'male'
+        },
+        list:[{
+          id:1,
+          name:'zjf'
+        },{
+          id:2,
+          name:'tom'
+        },{
+          id:3,
+          name:'jack'
+        }]
+      }
+    })
+  </script>
+</body>
+</html>
