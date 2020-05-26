@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-show</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+</head>
+<style>
+    .search div{
+        float: left;
+    }
+    img{
+        height: 20px;
+    }
+    
+</style>
+<body>
+    <div id="app">
+        <div class="search">
+            <div>分类</div>
+            <img v-on:click="toggle" v-bind:src="imgUrl" alt="">
+        </div>
+        <div class="items" v-show="ifShow" v-for="item in list" v-bind:key="item.id">
+            <div>{{item.name}}</div>
+        </div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                ifShow:false,
+                imgUrl:'./1.png',
+                list:[{
+                    id:1,
+                    name:'历史'
+                },{
+                    id:2,
+                    name:'科技'
+                },{
+                    id:3,
+                    name:'爱情'
+                }]
+            },
+            methods: {
+                toggle(){
+                    if(this.imgUrl == './1.png'){
+                        this.imgUrl = './2.png'
+                        this.ifShow = true
+                    }else{
+                        this.imgUrl = './1.png'
+                        this.ifShow = false
+                    }
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
