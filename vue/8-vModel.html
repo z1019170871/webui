@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双向数据绑定</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+</head>
+</style>
+<body>
+    <div id="app">
+       <form @submit.prevent="submitHandler">
+           文章标题<input type="text" v-model="form.title"><br>
+           文章样式
+                <label for="listOne">
+                    <input type="radio" id="listOne" name="liststyle" value="1" v-model="form.liststyle">样式一
+                </label>
+                <label for="listTwo">
+                    <input type="radio" id="listTwo" name="liststyle" value="2" v-model="form.liststyle">样式二
+                </label>
+                <br>
+           所属栏目<br>
+                <select name="" id="" v-model="form.categoryId">
+                    <option value="1">体育</option>
+                    <option value="2">娱乐</option>
+                    <option value="3">新闻</option>
+                </select><br>
+            正文
+                <textarea name="" id="" cols="30" rows="10" v-model="form.content"></textarea>
+                <input type="submit" value="提交">
+                {{form}}
+       </form>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+               username:'zjf',
+               form:{
+                  title:'初始标题',
+                  categoryId:1  
+               }
+            },
+            methods: {
+               submitHandler(){
+                   alert(JSON.stringify(this.form))
+               }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
