@@ -1,0 +1,175 @@
+复习
+    1、表单
+        <select v-model='form.categoryId'>
+            <option :value='item.id' v-for="item in category" :key='item.id'>{{item.name}}</option>
+        </select>
+
+        <input type='checkbox' v-model='form.options' value='css'>css
+        <input type='checkbox' v-model='form.options' value='vue'>vue
+
+        data(){
+            retutn {
+                form:{
+                    options:[]
+                }
+            }
+        }
+
+    2、修饰符
+        v-model.lazy
+        v-model.number
+        v-model.trim
+    
+    3、vue生命周期钩子函数
+        <div id='app'>
+            {{msg}}
+        </div>
+        new Vue({
+            el:'#app',
+            data(){
+                return {
+                    msg:'hello vue'
+                }
+            },
+            methods:{
+
+            }
+        })
+
+        beforeCreate
+        *created
+        beforeMount
+        *mounted
+        beforeUpdate
+        updated
+        beforeDestory
+        destoryed
+    
+    4、计算属性computed
+        computed vs 方法 vs 声明式渲染
+        1. 处理data中的数据，当data中的数据发生改变，computed立即重新计算
+        2. 对于一切复杂的数据逻辑，都推荐computed
+        3. 多次使用数据时，方法会执行多次，但是computed只会执行一次
+        4. 
+            computed:{
+                reverseMsg(){
+                    return xxx;
+                }
+            }
+            ==>
+            computed:{
+                reverseMsg:{
+                    get:function(){
+                        return xxx;
+                    },
+                }
+            }
+
+    5、时间处理的方法
+        1. 计算属性
+        2. methods中定义方法
+        3. 过滤器
+    
+    6、过滤器(filter)
+        1. 过滤器，用于处理一些常见的文本格式(时间格式)
+            filters:{
+                dateFormat(time){
+                    retutn moment(time).format();
+                }
+            }
+            <td>{{item.regTime | dateFormat}}</td>
+
+        2. 过滤器可以使用的地方
+            双大括号加管道符号 |
+                {{item.regTime | dateFormat}}
+            v-bind表达式
+                <div v-bind:id="rawId | formatId"></div>
+        
+        3. 过滤器可以串联
+            {{message | dateFormatA | dateFormatB}}
+            表达式message的值将作为参数传递给dateFormatA
+            然后将dateFormatA的结果作为参数传递给dateFormatB
+        
+        4. 过滤器的定义方式(参考2-filter.html)
+            全局注册和局部注册
+            全局注册
+                Vue.filter('过滤器名称',function(time){
+                    return xxxx;
+                })
+            局部注册
+                data(){},
+                methods:{},
+                filters:{
+                    过滤器名称(time){
+                        return xxx;
+                    }
+                },
+            使用
+                {{date | 过滤器名称}}
+            注意：
+                1、使用全局注册时，一定要在vue实例对象创建之前，否则会报错
+                2、过滤器调用的时候，采用就近原则
+                    当全局注册的过滤器和局部注册的过滤器的名称一致时，采用局部注册的过滤器
+        
+        5. 与将时间处理放在methods中对比
+            如果在其他页面也需要处理时间，使用全局注册的过滤器，只要定义一次即可
+            而方法需要重复的写多次
+            
+        拓展
+            1. 页面滚动到最上方
+            2. 滚动条样式
+            参考案例：3-toTop.html
+            插件名：nicescroll
+
+    7、监听器(watch)
+        1) 使用场景
+            1. 需要在数据变化时执行异步操作
+            2. 开销比较大的操作
+            比如分页功能、搜索功能
+
+        2) 基础语法
+            watch:{
+                '变量':function(now,old){
+                    // now是当前值
+                    // old是之前的值
+                }
+            }
+
+            1. 对于普通字符串监听
+                msg:'',
+                watch:{
+                    msg:function(){
+
+                    }
+                }
+            2. 对于对象的属性的监听
+                1、需要监听的对象的属性没有初始值
+                    只会监听到一次，如果删除重新输入，监听不到
+                1、需要监听的对象的属性有初始值
+                    直接监听不到
+                
+                解决：
+                    1、对于对象的属性进行单个的监听
+                        form:{}
+                        wantch:{
+                            'form.username':function(){
+                                
+                            }
+                        }
+                    2、*深度监听
+                        form: {
+                            handler: function (now, old) {
+                                console.log('now', now)
+                                console.log('old', old)
+                            },
+                            deep: true
+                        },
+                        会监听到form对象中所有属性的变化
+                
+                    3、对对象的多个属性进行监听，其他属性不监听
+                        参考:5-watch2.html
+                    
+        
+
+
+        

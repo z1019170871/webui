@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单向数据流</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.26.0/moment.js"></script>
+</head>
+<body>
+    <div id="app">
+        <xpf-alert :date='dateNow'></xpf-alert>
+    </div>
+    <script>
+        Vue.component('xpf-alert',{
+            template:`
+                <div>
+                    <div>原值:{{date}}----改变后的值:{{newDate}}</div>
+                </div>
+            `,
+            props:{
+                date:Date
+            },
+            computed: {
+                newDate(){
+                    return moment(this.date).format('YYYY-MM-DD')
+                }
+            },        
+        })
+
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                    dateNow:new Date()
+                } 
+            },
+            
+        })
+    </script>
+</body>
+</html>

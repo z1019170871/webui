@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤器的全局注册和局部注册</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.26.0/moment.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>原值：{{date}}</div>
+        <div>局部注册的过滤器：{{date | dateFormat}}</div>
+        <div>全局注册的过滤器：{{date | dateFormat}}</div>
+    </div>
+    <script>
+        // 全局注册
+        Vue.filter('dateFormat',function(a){
+            return moment(a).format('YYYY-MM-DD');
+        })
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    date:new Date()
+                }
+            },
+            // 局部注册
+            filters: {
+                dateFormat(time){
+                    return moment(time).format('YYYY-MM-DD hh:mm:ss');
+                }
+            }
+        })
+
+        
+    </script>
+</body>
+
+</html>

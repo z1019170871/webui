@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件的传参</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <xpf-alert title="hello xpf" visible='false'></xpf-alert>
+        <xpf-alert title="hello xpf" :visible='false'></xpf-alert>
+    </div>
+    <script>
+        Vue.component('xpf-alert',{
+            template:`
+                <div>
+                    hello vue
+                    <div v-if='visible'>{{title}}</div>
+                    {{typeofVisible}}
+                </div>
+            `,
+            props:['title','visible'],
+            computed: {
+                typeofVisible(){
+                    return typeof this.visible
+                }
+            },
+        })
+
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                
+                } 
+            },
+        })
+    </script>
+</body>
+</html>

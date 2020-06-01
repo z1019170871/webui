@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件参数的数据类型</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <xpf-alert title="hello xpf" :visible='false'></xpf-alert>
+    </div>
+    <script>
+        Vue.component('xpf-alert',{
+            template:`
+                <div>
+                    hello vue
+                    <div v-if='visible'>{{title}}</div>
+                </div>
+            `,
+            props:{
+                title: {
+                    type:String,
+                    required:true
+                }, // 期望接收到的title为string类型 并且必须
+                visible: Boolean,
+            }           
+        })
+
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                
+                } 
+            },
+        })
+    </script>
+</body>
+</html>
