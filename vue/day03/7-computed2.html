@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.26.0/moment.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{newUsers}}
+    </div>
+    <script>
+        new Vue({
+            el:"#app",
+            data() {
+                return {
+                    users:[]
+                }
+            },
+            created() {
+                this.findUser();
+            },
+            methods: {
+                findUser(){
+                    axios.get('http://39.96.21.48:8099/manager/user/findAllUser')
+                    .then(res => {
+                        this.users = res.data.data
+                    })
+                }
+            },
+            computed: {
+                newUsers(){
+                    this.users.forEach((item)=>{
+                        let result = moment(item.regtime).format('YYYY-MM-DD hh:mm:ss')
+                        item.regtime = result
+                    })
+                    return this.users
+                }
+            },
+        })
+    </script>
+</body>
+</html>
